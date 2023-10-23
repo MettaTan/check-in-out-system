@@ -1,0 +1,472 @@
+<%- include("../partials/DatatablesDependencies") %> <%-
+include("../partials/header") %>
+<style>
+  ::placeholder {
+    text-transform: none;
+  }
+  #PIN {
+    text-transform: uppercase;
+  }
+  thead tr,
+  tfoot tr {
+    background-color: #f1f1f1;
+  }
+  th {
+    white-space: nowrap;
+  }
+  .filter-red {
+    filter: brightness(0) saturate(100%) invert(42%) sepia(34%) saturate(5692%)
+      hue-rotate(329deg) brightness(84%) contrast(107%);
+  }
+  .filter-cyan {
+    filter: brightness(0) saturate(100%) invert(82%) sepia(28%) saturate(7352%)
+      hue-rotate(145deg) brightness(96%) contrast(96%);
+  }
+</style>
+<main class="container">
+  <div class="card" style="width: 100%;">
+    <div class="card-body">
+  <hr />
+  <div class="row g-3 mb-3">
+    <a class="btn btn-outline-danger w-100" type="button" href="/admin"
+      ><strong>Go Back</strong></a
+    >
+  </div>
+  <table class="table table-hover" id="pass-table">
+    <thead>
+      <tr>
+        <th scope="col">Date</th>
+        <th scope="col">Passphrase</th>
+        <th scope="col">PIN</th>
+        <th scope="col">Used?</th>
+        <th scope="col"></th>
+      </tr>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tfoot>
+      <tr>
+        <th scope="col">Date</th>
+        <th scope="col">Passphrase</th>
+        <th scope="col">PIN</th>
+        <th scope="col">Used?</th>
+        <th scope="col"></th>
+      </tr>
+    </tfoot>
+  </table>
+  <div class="modal fade" id="edit-modal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Entry</h5>
+          <button
+            class="btn-close"
+            type="button"
+            data-bs-dismiss="modal"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="container">
+            <form class="row g-3" autocomplete="off">
+              <div class="form-group col-md-6">
+                <label class="form-label" for="oldDate">Old Date:</label>
+                <input class="form-control" id="oldDate" type="date" disabled />
+              </div>
+              <div class="form-group col-md-6">
+                <label class="form-label" for="date">New Date:</label>
+                <input class="form-control" id="date" type="date" />
+              </div>
+              <div class="form-group col-md-6">
+                <label class="form-label" for="oldPassphrase"
+                  >Old Passphrase:</label
+                >
+                <input
+                  class="form-control"
+                  id="oldPassphrase"
+                  type="text"
+                  disabled
+                />
+              </div>
+              <div class="form-group col-md-6">
+                <label class="form-label" for="passphrase"
+                  >New Passphrase:</label
+                >
+                <input
+                  class="form-control"
+                  id="passphrase"
+                  type="text"
+                  placeholder="10 digit no."
+                  maxlength="10"
+                />
+              </div>
+              <div class="form-group col-md-6">
+                <label class="form-label" for="oldPIN">Old PIN:</label>
+                <input class="form-control" id="oldPIN" type="text" disabled />
+              </div>
+              <div class="form-group col-md-6">
+                <label class="form-label" for="PIN">New PIN:</label>
+                <input
+                  class="form-control"
+                  id="PIN"
+                  type="text"
+                  placeholder="PIN"
+                  maxlength="8"
+                  onkeyup="upper(this)"
+                />
+              </div>
+              <input id="oldState" type="hidden" />
+              <div class="form-group col-md-12">
+                <label class="form-label" for="state">Used?</label>
+                <select class="form-select" id="state">
+                  <option value="No">No</option>
+                  <option value="Yes">Yes</option>
+                </select>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            class="btn btn-outline-danger me-auto"
+            type="button"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button
+            class="btn btn-success"
+            id="edit-entry"
+            type="button"
+            disabled
+          >
+            Edit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="delete-modal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Entry Deletion</h5>
+          <button
+            class="btn-close"
+            type="button"
+            data-bs-dismiss="modal"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <input id="deleteDate" type="hidden" />
+          <input id="deletePassphrase" type="hidden" />
+          <input id="deleteState" type="hidden" />
+          <h6>
+            Once deleted, you will <u><strong>NOT</strong></u> be able to
+            recover this entry.
+          </h6>
+          <h6>Proceed to delete?</h6>
+        </div>
+        <div class="modal-footer">
+          <button
+            class="btn btn-outline-danger me-auto"
+            type="button"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button class="btn btn-danger" id="delete-entry" type="button">
+            Delete!
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</main>
+<%- include("../partials/footer") %>
+<script>
+  $(document).ready(function () {
+    $(".table").DataTable({
+      ajax: "getPassData",
+      columnDefs: [
+        {
+          targets: [4],
+          orderable: false,
+        },
+      ],
+      columns: [
+        {
+          data: "date",
+          type: "date",
+          render: function (data, type, row, meta) {
+            return moment(data, "DD-MM-YYYY").format("D MMM YYYY");
+          },
+        },
+        { data: "passphrase" },
+        { data: "PIN" },
+        {
+          data: "state",
+          render: function (data, type, row, meta) {
+            let color;
+
+            switch (data) {
+              case "Yes":
+                color = "red";
+                break;
+              case "No":
+                color = "forestgreen";
+              default:
+            }
+
+            return `<span style="color: ${color};">${data}</span>`;
+          },
+        },
+        {
+          defaultContent: `<button class="btn btn-outline-info btn-sm editButton" type="button"><img class="filter-cyan" src="/assets/pencil-square.svg" height="17px"></button>
+                    <button class="btn btn-outline-danger btn-sm deleteButton" type="button"><img class="filter-red" src="/assets/trash.svg" height="17px"></button>`,
+        },
+      ],
+      order: [[0, "desc"]],
+      orderCellsTop: true,
+      pagingType: "first_last_numbers",
+      initComplete: function () {
+        this.api()
+          .columns()
+          .every(function () {
+            const column = this;
+
+            const controlTr = $(".table thead tr:eq(1) th").eq(column.index()),
+              search = (regExp) => {
+                const searchStr = $.fn.dataTable.util.escapeRegex(regExp);
+
+                column
+                  .search(searchStr ? `^${searchStr}$` : "", true, false)
+                  .draw();
+              };
+
+            switch (column.index()) {
+              case 0:
+                $("<input class='form-control form-control-sm' type='date'>")
+                  .appendTo(controlTr)
+                  .on("change", function () {
+                    const regExp = $(this).val()
+                      ? moment($(this).val(), "YYYY-MM-DD").format("D MMM YYYY")
+                      : $(this).val();
+
+                    search(regExp);
+                  });
+                break;
+              case 3:
+                const select = $(`<select class="form-select form-select-sm">
+								<option value="">All</option>
+							</select>`)
+                  .appendTo(controlTr)
+                  .on("change", function () {
+                    const regExp = $(this).val();
+
+                    search(regExp);
+                  });
+
+                column
+                  .data()
+                  .unique()
+                  .sort()
+                  .each(function (value, index) {
+                    select.append(`<option value="${value}">${value}</option>`);
+                  });
+              default:
+            }
+          });
+      },
+    });
+  });
+
+  // Variable declarations
+  const editButtons = Array.from(document.querySelectorAll(".editButton")),
+    deleteButtons = Array.from(document.querySelectorAll(".deleteButton")),
+    {
+      pass_table,
+      edit_modal,
+      edit_entry,
+      oldDate,
+      oldPassphrase,
+      oldPIN,
+      oldState,
+      delete_modal,
+      delete_entry,
+      deleteDate,
+      deletePassphrase,
+      deleteState,
+    } = Object.fromEntries(
+      Array.from(document.querySelectorAll("[id]")).map((element) => [
+        element.id.replace(/-/g, "_"),
+        element,
+      ])
+    ),
+    formInputs = Object.fromEntries(
+      Array.from(
+        document.querySelectorAll("#date, #passphrase, #PIN, #state")
+      ).map((element) => [element.id, element])
+    );
+
+  const bsEditModal = new bootstrap.Modal(edit_modal, {}),
+    bsDeleteModal = new bootstrap.Modal(delete_modal, {});
+
+  let selectedTrIndex; // For assignment on edit/delete button click
+
+  // Function definitions
+  const upper = (event) => (event.value = event.value.toUpperCase());
+
+  // Client-side form validation
+  const regExPatterns = {
+    passphrase: /^[a-zA-Z0-9 ]{15,32}$/i,
+    PIN: /^\w{4}$/i,
+  };
+
+  const validateValue = (id, value) => regExPatterns[id].test(value);
+
+  const validationState = (boolean) => {
+    return boolean ? "is-valid" : "is-invalid";
+  };
+
+  const checkValidation = (id, value) => {
+    switch (id) {
+      case "passphrase":
+      case "PIN":
+        return `form-control ${validationState(validateValue(id, value))}`;
+      case "date":
+        return `form-control ${validationState(value !== "")}`;
+      case "state":
+        return `form-select ${validationState(value !== "")}`;
+      default:
+        return "";
+    }
+  };
+
+  const submitState = () =>
+    (edit_entry.disabled = !Object.values(formInputs).every((element) =>
+      element.classList.contains("is-valid")
+    ));
+
+  const validate = (id) => {
+    formInputs[id].className = checkValidation(id, formInputs[id].value);
+    submitState();
+  };
+
+  // Edit modal scripting
+  const editModal = (tr) => {
+    selectedTrIndex = tr.rowIndex;
+    formInputs.date.value = oldDate.value = moment(
+      tr.cells[0].textContent,
+      "D MMM YYYY"
+    ).format("YYYY-MM-DD");
+    formInputs.passphrase.value = oldPassphrase.value = tr.cells[1].textContent;
+    formInputs.PIN.value = oldPIN.value = tr.cells[2].textContent;
+    formInputs.state.value = oldState.value = tr.cells[3].textContent;
+    Object.keys(formInputs).forEach((id) => validate(id));
+    bsEditModal.show();
+  };
+
+  const editTable = () => {
+    const tr = pass_table.rows[selectedTrIndex];
+    tr.cells[0].innerHTML = moment(formInputs.date.value, "YYYY-MM-DD").format(
+      "D MMM YYYY"
+    );
+    tr.cells[1].innerHTML = formInputs.passphrase.value;
+    tr.cells[2].innerHTML = formInputs.PIN.value;
+    const newState = formInputs.state.value;
+
+    let color;
+    switch (newState) {
+      case "Yes":
+        color = "red";
+        break;
+      case "No":
+        color = "forestgreen";
+      default:
+    }
+
+    tr.cells[3].innerHTML = `<span style="color: ${color};">${newState}</span>`;
+
+    bsEditModal.hide();
+  };
+
+  const editEntry = () => {
+    fetch("/admin/editPass", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        old: {
+          date: oldDate.value,
+          passphrase: oldPassphrase.value,
+          state: oldState.value,
+        },
+        new: {
+          date: formInputs.date.value,
+          passphrase: formInputs.passphrase.value,
+          PIN: formInputs.PIN.value,
+          state: formInputs.state.value,
+        },
+      }),
+    });
+  };
+
+  // Delete modal scripting
+  const deleteModal = (tr) => {
+    selectedTrIndex = tr.rowIndex;
+    deleteDate.value = tr.cells[0].textContent;
+    deletePassphrase.value = tr.cells[1].textContent;
+    deleteState.value = tr.cells[3].textContent;
+    bsDeleteModal.show();
+  };
+
+  const deleteTable = () => {
+    const tr = pass_table.rows[selectedTrIndex];
+    tr.parentNode.removeChild(tr);
+    bsDeleteModal.hide();
+  };
+
+  const deleteEntry = () => {
+    fetch("/admin/deletePass", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        date: deleteDate.value,
+        passphrase: deletePassphrase.value,
+        state: deleteState.value,
+      }),
+    });
+  };
+
+  // Event listeners
+  pass_table.addEventListener("click", (event) => {
+    const parentButton =
+      event.target.tagName === "IMG" ? event.target.parentNode : event.target;
+
+    const parentTr = parentButton.parentNode.parentNode;
+
+    if (parentButton.classList.contains("editButton")) editModal(parentTr);
+    else if (parentButton.classList.contains("deleteButton"))
+      deleteModal(parentTr);
+  });
+
+  Object.keys(formInputs).forEach((id) =>
+    formInputs[id].addEventListener("input", () => validate(id))
+  );
+
+  edit_entry.addEventListener("click", () => {
+    editTable();
+    editEntry();
+  });
+
+  delete_entry.addEventListener("click", () => {
+    deleteTable();
+    deleteEntry();
+  });
+</script>

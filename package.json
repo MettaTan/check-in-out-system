@@ -1,0 +1,29 @@
+{
+  "name": "admin_bibo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "server": "cd app & node index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tingjunrui/ADMIN_BIBO.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tingjunrui/ADMIN_BIBO/issues"
+  },
+  "homepage": "https://github.com/tingjunrui/ADMIN_BIBO#readme",
+  "dependencies": {
+    "bootstrap": "^5.3.2",
+    "cors": "^2.8.5",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-ejs-layouts": "^2.5.1",
+    "forever": "^4.0.3",
+    "moment": "^2.29.4",
+    "node-json-db": "^2.1.3"
+  }
+}

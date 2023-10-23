@@ -1,0 +1,185 @@
+<%- include("../partials/header") %>
+<style>
+  ::placeholder {
+    text-transform: none;
+  }
+  #PIN {
+    text-transform: uppercase;
+  }
+  th {
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+  td {
+    vertical-align: middle;
+  }
+  .tableButton {
+    text-align: right;
+  }
+</style>
+<main class="container w-75">
+  <div class="card" style="width: 100%;">
+    <div class="card-body">
+  <hr />
+  <form
+    class="row g-3"
+    method="post"
+    action="/admin/addPass"
+    autocomplete="off"
+  >
+    <div class="form-group col-md-6 offset-md-3">
+      <div class="input-group">
+        <span class="input-group-text">Date</span>
+        <input class="form-control" id="date" name="data[date]" type="date" />
+      </div>
+    </div>
+    <div class="col-md-12" id="pass-div">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">S/N</th>
+            <th scope="col">Passphrase</th>
+            <th scope="col">PIN</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody id="pass-tbody"></tbody>
+        <tfoot>
+          <th scope="row" colspan="4">
+            <button
+              class="btn btn-outline-secondary btn-sm w-100"
+              id="add-row"
+              type="button"
+            >
+              Add Pass Entry
+            </button>
+          </th>
+        </tfoot>
+      </table>
+    </div>
+    <div class="col-md-6">
+      <a class="btn btn-danger btn-lg w-100" type="button" href="/admin"
+        >Go Back</a
+      >
+    </div>
+    <div class="col-md-6">
+      <button
+        class="btn btn-success btn-lg w-100"
+        id="submit"
+        type="submit"
+        disabled
+      >
+        <strong>Submit form</strong>
+      </button>
+    </div>
+  </form>
+</div>
+</div>
+</main>
+<%- include("../partials/footer") %>
+<script>
+  const { date, submit, pass_div, pass_tbody, add_row } = Object.fromEntries(
+    Array.from(document.querySelectorAll("[id]")).map((element) => [
+      element.id.replace(/-/g, "_"),
+      element,
+    ])
+  );
+
+  // Function definitions
+  const upper = (event) => (event.value = event.value.toUpperCase());
+
+  // Client-side form validation
+  const regExPatterns = {
+    passphrase: /^[a-zA-Z0-9 ]{15,32}$/i,
+    PIN: /^\w{4}$/i,
+  };
+
+  const validateValue = (id, value) => regExPatterns[id].test(value);
+
+  const validationState = (boolean) => {
+    return boolean ? "is-valid" : "is-invalid";
+  };
+
+  const checkValidation = (id, value) => {
+    switch (id) {
+      case "passphrase":
+      case "PIN":
+        return `form-control ${validationState(validateValue(id, value))}`;
+      case "date":
+        return `form-control ${validationState(value !== "")}`;
+      default:
+        return "";
+    }
+  };
+
+  const submitState = () => {
+    const inputsArr = Array.from(document.querySelectorAll("main input"));
+    submit.disabled =
+      !inputsArr.every((element) => element.classList.contains("is-valid")) ||
+      inputsArr.length === 1;
+  };
+
+  // Pass Entry Scripting
+  const appendRow = (rowElements, tbody) => {
+    const newRow = tbody.insertRow(-1);
+
+    rowElements.forEach((element, index) => {
+      newRow.insertCell(index);
+      newRow.cells[index].outerHTML = element;
+    });
+  };
+
+  const deleteRow = (event) => {
+    const parentTr = event.target.parentNode.parentNode;
+
+    parentTr.parentNode.removeChild(parentTr);
+  };
+
+  const resetRowNo = (tbody) => {
+    Array.from(tbody.querySelectorAll("tr")).forEach((element, index) => {
+      element.querySelector("strong").innerText = index + 1;
+    });
+  };
+
+  const passElements = [
+    `<th scope="row">
+			<button class="btn btn-light" type="button" disabled><strong></strong></button>
+		</th>`,
+    `<td class="input-group">
+			<span class="input-group-text">Pass</span>
+			<input class="form-control" id="passphrase" name="data[passphrase][]" type="text" placeholder="Phrase of minimum 15 characters" maxlength="32">
+			<span class="input-group-text">/${moment().format("YYYY")}</span>
+		</td>`,
+    `<td>
+			<input class="form-control" id="PIN" name="data[PIN][]" type="text" placeholder="PIN" maxlength="4" onkeyup="upper(this)">
+		</td>`,
+    `<td class="tableButton">
+			<button class="btn-close" type="button"></button>
+		</td>`,
+  ];
+
+  // Event listeners
+  date.addEventListener("input", () => {
+    date.className = checkValidation(date.id, date.value);
+    submitState();
+  });
+
+  pass_div.addEventListener("click", (event) => {
+    if (event.target === add_row) appendRow(passElements, pass_tbody);
+    else if (event.target.classList.contains("btn-close")) deleteRow(event);
+    resetRowNo(pass_tbody);
+    submitState();
+  });
+
+  pass_tbody.addEventListener("input", (event) => {
+    const element = event.target;
+
+    if (["passphrase", "PIN"].includes(element.id)) {
+      element.className = checkValidation(element.id, element.value);
+      submitState();
+    }
+  });
+
+  // Initialize values
+  add_row.click();
+</script>

@@ -1,0 +1,246 @@
+<%- include("../partials/DatatablesDependencies") %> <%-
+include("../partials/header") %>
+<style>
+  thead tr,
+  tfoot tr {
+    background-color: #f1f1f1;
+  }
+  th {
+    white-space: nowrap;
+  }
+  td > img {
+    border: 1px solid black;
+  }
+</style>
+<main class="container">
+  <div class="card" style="width: 100%;">
+    <div class="card-body">
+  <hr />
+  <div class="row g-3 mb-3">
+    <a class="btn btn-outline-danger w-100" type="button" href="/admin"
+      ><strong>Go Back</strong></a
+    >
+  </div>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">S/N</th>
+        <th scope="col">NRIC</th>
+        <th scope="col">Full Name</th>
+        <th scope="col">Department</th>
+        <th scope="col">Contact No.</th>
+        <th scope="col">Purpose of Visit</th>
+        <th scope="col">Passphrase</th>
+        <th scope="col">PIN</th>
+        <th scope="col">Date &amp; Time In</th>
+        <th scope="col">Signature In</th>
+        <th scope="col">Date &amp; Time Out</th>
+        <th scope="col">Signature Out</th>
+        <th scope="col">Duration</th>
+        <th scope="col">Remarks</th>
+        <th scope="col">Team Members Details</th>
+      </tr>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tfoot>
+      <tr>
+        <th scope="col">S/N</th>
+        <th scope="col">NRIC</th>
+        <th scope="col">Full Name</th>
+        <th scope="col">Department</th>
+        <th scope="col">Contact No.</th>
+        <th scope="col">Purpose of Visit</th>
+        <th scope="col">Passphrase</th>
+        <th scope="col">PIN</th>
+        <th scope="col">Date &amp; Time In</th>
+        <th scope="col">Signature In</th>
+        <th scope="col">Date &amp; Time Out</th>
+        <th scope="col">Signature Out</th>
+        <th scope="col">Duration</th>
+        <th scope="col">Remarks</th>
+        <th scope="col">Team Members Details</th>
+      </tr>
+    </tfoot>
+  </table>
+  </div>
+</div>
+</main>
+<%- include("../partials/footer") %>
+<script>
+  $(document).ready(function () {
+    $(".table").DataTable({
+      ajax: "getDeptData",
+      columnDefs: [
+        {
+          targets: [7, 9, 11, 13, 14],
+          orderable: false,
+        },
+      ],
+      columns: [
+        {
+          data: "index",
+          render: function (data, type, row, meta) {
+            return data + 1;
+          },
+        },
+        { data: "nric" },
+        { data: "fullName" },
+        { data: "dept" },
+        {
+          data: "contact",
+          render: function (data, type, row, meta) {
+            return `+65 ${data.substring(0, 4)} ${data.substring(4)}`;
+          },
+        },
+        { data: "purpose" },
+        {
+          data: "pass",
+          render: function (data, type, row, meta) {
+            return Object.keys(data).length === 0
+              ? "-"
+              : Object.keys(data).join(", ");
+          },
+        },
+        {
+          data: "pass",
+          render: function (data, type, row, meta) {
+            return Object.values(data).length === 0
+              ? "-"
+              : Object.values(data).join(", ");
+          },
+        },
+        {
+          data: "timeIn",
+          type: "date",
+          render: function (data, type, row, meta) {
+            return moment(data, "DD-MM-YYYY HH:mm").format("D MMM YYYY HH:mm");
+          },
+        },
+        {
+          data: "signatureIn",
+          render: function (data, type, row, meta) {
+            return `<img src="${data}" width="100px">`;
+          },
+        },
+        {
+          data: "timeOut",
+          type: "date",
+          render: function (data, type, row, meta) {
+            if (data)
+              return moment(data, "DD-MM-YYYY HH:mm").format(
+                "D MMM YYYY HH:mm"
+              );
+            else return "-";
+          },
+        },
+        {
+          data: "signatureOut",
+          render: function (data, type, row, meta) {
+            return `<img src="${data}" width="100px">`;
+          },
+        },
+        {
+          render: function (data, type, row, meta) {
+            if (row.timeOut) {
+              const timeOut = moment(row.timeOut, "DD-MM-YYYY HH:mm"),
+                timeIn = moment(row.timeIn, "DD-MM-YYYY HH:mm");
+
+              const timeDiff = moment.duration(timeOut.diff(timeIn));
+
+              return `${timeDiff.hours()}hr ${timeDiff.minutes()}min`;
+            } else return "-";
+          },
+        },
+        {
+          render: function (data, type, row, meta) {
+            return row.timeOut ? "-" : "Personnel has not checked out yet!";
+          },
+        },
+        {
+          data: "team",
+          render: function (data, type, row, meta) {
+            return Object.keys(data).length === 0
+              ? "-"
+              : Object.keys(data)
+                  .map((name) => `${name} (${data[name]})`)
+                  .join(", ");
+          },
+        },
+      ],
+      order: [[0, "desc"]],
+      orderCellsTop: true,
+      pagingType: "first_last_numbers",
+      initComplete: function () {
+        this.api()
+          .columns()
+          .every(function () {
+            const column = this;
+
+            const controlTr = $(".table thead tr:eq(1) th").eq(column.index()),
+              search = (regExp) => {
+                const searchStr = $.fn.dataTable.util.escapeRegex(regExp);
+
+                column
+                  .search(searchStr ? `^${searchStr}$` : "", true, false)
+                  .draw();
+              };
+
+            switch (column.index()) {
+              case 5:
+                const select = $(`<select class="form-select form-select-sm">
+								<option value="">All</option>
+							</select>`)
+                  .appendTo(controlTr)
+                  .on("change", function () {
+                    const regExp = $(this).val();
+
+                    search(regExp);
+                  });
+
+                column
+                  .data()
+                  .unique()
+                  .sort()
+                  .each(function (value, index) {
+                    select.append(`<option value="${value}">${value}</option>`);
+                  });
+                break;
+              case 8:
+              case 10:
+                $("<input class='form-control form-control-sm' type='date'>")
+                  .appendTo(controlTr)
+                  .on("change", function () {
+                    const regExp = $(this).val()
+                      ? moment($(this).val(), "YYYY-MM-DD").format("D MMM YYYY")
+                      : $(this).val();
+
+                    const searchStr = $.fn.dataTable.util.escapeRegex(regExp);
+
+                    column
+                      .search(searchStr ? `^${searchStr}` : "", true, false)
+                      .draw();
+                  });
+              default:
+            }
+          });
+      },
+      scrollX: true,
+    });
+  });
+</script>

@@ -1,0 +1,21 @@
+// custom variables
+$primary: #0052a2;
+$light: #f6f6f2;
+$dark: #00264d;
+$font-family-sans-serif: "Open Sans", sans-serif !default;
+$font-family-base: $font-family-sans-serif !default;
+
+@import url("http://fonts.googleapis.com/css?family=Open+Sans:400,300,700");
+
+// import the functions and variables
+@import "../node_modules/bootstrap/scss/_functions";
+@import "../node_modules/bootstrap/scss/_variables";
+
+$custom-theme-colors: (
+  "altdark": #020202,
+);
+
+$theme-colors: map-merge($custom-theme-colors, $theme-colors);
+
+// import bootstrap
+@import "../node_modules/bootstrap/scss/bootstrap";

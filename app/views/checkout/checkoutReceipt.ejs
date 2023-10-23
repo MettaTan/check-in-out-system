@@ -1,0 +1,125 @@
+<style>
+  /* * {
+        border-style: solid;
+        border-color: black;
+        border-width: 1px;
+    } */
+  img {
+    height: 35mm;
+  }
+  h5 {
+    font-family: "Times New Roman", Times, serif;
+  }
+  .receipt {
+    /* Sticker padding */
+    width: 80mm;
+    padding-top: 0mm;
+    padding-right: 4mm;
+    padding-bottom: 0mm;
+    padding-left: 4mm;
+    /* Use this margin to adjust sticker margins */
+    margin-top: 0mm !important;
+    margin-right: 0mm !important;
+    margin-bottom: 0mm !important;
+    margin-left: 0mm !important;
+    visibility: hidden;
+    overflow: hidden;
+  }
+  @media print {
+    @page {
+      size: 80mm 100%;
+      margin-top: 0mm;
+      margin-right: 0mm;
+      margin-bottom: 0mm;
+      margin-left: 0mm;
+    }
+    main,
+    main * {
+      display: none !important;
+    }
+    .receipt,
+    .receipt * {
+      visibility: visible !important;
+    }
+  }
+</style>
+<main class="container w-75 mt-4">
+  <div class="card" style="width: auto;">
+   <div class="card-body">
+  <br />
+  <div class="d-flex justify-content-left container w-50">
+    Name:&nbsp;<strong><%= dept.fullName %></strong>
+  </div>
+  <div class="d-flex justify-content-left container w-50">
+    NRIC:&nbsp;<strong><%= dept.nric %></strong>
+  </div>
+  <div class="d-flex justify-content-left container w-50">
+    Department:&nbsp;<strong><%= dept.dept %></strong>
+  </div>
+  <br />
+  <div class="d-flex justify-content-evenly container w-50">
+    <a class="btn btn-outline-danger btn-lg" type="button" href="/">Go Back</a>
+    <button
+      class="btn btn-success btn-lg"
+      type="button"
+      onclick="window.print()"
+    >
+      Print
+    </button>
+  </div>
+</div>
+</div>
+</main>
+<div class="receipt">
+  <div class="text-center">
+    <img class="my-3" src="/assets/zeroLogo.png" />
+    <h5 class="mb-3"><strong>SAERIN ENGINEERING CHECK-OUT SLIP</strong></h5>
+  </div>
+  <div class="mb-4">
+    <strong>DEPARTMENT: </strong><%= dept.dept %>
+    <br />
+    <strong>FULL NAME: </strong><%= dept.fullName %>
+    <br />
+    <strong>CONTACT NO.: </strong><%= `+65 ${dept.contact.substring(0, 4)}
+    ${dept.contact.substring(4)}` %>
+    <br />
+    <strong>Passphrase: </strong><% Object.keys(dept.pass).forEach((entry,
+    index) => { %> <%= `${entry}${index === Object.keys(dept.pass).length - 1 ?
+    "" : ", "}` %> <% }); %>
+    <br />
+    <strong>DATE OF VISIT: </strong><%= dept.timeIn %>
+    <br />
+    <strong>COUNT: </strong><%= feedback.count %>
+    <br />
+    <strong>ROLE: </strong><%= feedback.role %>
+    <br />
+    <strong>PURPOSE OF VISIT: </strong><%= feedback.purpose %>
+    <br />
+    <strong>WAITING TIME: </strong><%= feedback.wait %>
+    <br />
+    <strong>REASON FOR WAITING TIME: </strong><%= feedback.waitelaborate %>
+    <br />
+    <strong>TIME SPENT: </strong><%= feedback.time %>
+    <br />
+    <strong>REASON FOR TIME SPENT: </strong><%= feedback.timeelaborate %>
+    <br />
+    <strong>SERVICE LEVEL ADEQUATE?: </strong><%= feedback.service %>
+    <br />
+    Comments: <%= feedback.serviceComment === "" ? "-" : feedback.serviceComment
+    %>
+    <br />
+    <strong>PAPERWORK REASONABLE?: </strong><%= feedback.paperwork %>
+    <br />
+    Comments: <%= feedback.paperworkComment === "" ? "-" :
+    feedback.paperworkComment %>
+    <br />
+    <strong>Other Remarks: </strong><%= feedback.comment === "" ? "-" :
+    feedback.comment %>
+    <br />
+    <strong>TIME OUT: </strong><%= dept.timeOut %>
+  </div>
+  <hr />
+</div>
+<script>
+  window.print();
+</script>

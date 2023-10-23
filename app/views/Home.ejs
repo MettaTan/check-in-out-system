@@ -1,0 +1,316 @@
+<%- include("./partials/header") %>
+<style>
+  ::placeholder {
+    text-transform: none;
+  }
+  #nric {
+    text-transform: uppercase;
+  }
+  .menuButton {
+    --bs-btn-padding-y: 0.75rem;
+    --bs-btn-font-size: 1.5rem;
+  }
+  #receipt-modal table.table {
+    width: 100%;
+  }
+  #receipt-modal thead th:first-child {
+    width: 20%;
+  }
+  #receipt-modal thead th:nth-child(3) {
+    width: 40%;
+  }
+  th {
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+  td {
+    vertical-align: middle;
+  }
+  .tableButton {
+    text-align: right;
+  }
+  .printButton > img {
+    display: block;
+  }
+</style>
+<main class="container w-75 mt-4">
+  <div class="row d-flex justify-content-evenly">
+    <a class="btn btn-light menuButton col-md-4" type="button" href="/checkin"
+      ><strong>Check-in</strong></a
+    >
+    <a class="btn btn-light menuButton col-md-4" type="button" href="/checkout"
+      ><strong>Check-out</strong></a
+    >
+  </div>
+  <div class="row d-flex justify-content-center mt-4">
+    <button
+      class="btn btn-outline-light menuButton col-md-6"
+      type="button"
+      data-bs-toggle="modal"
+      data-bs-target="#receipt-modal"
+    >
+      Reprint receipt
+    </button>
+  </div>
+  <div class="row d-flex justify-content-center mt-4">
+    <button
+      class="btn btn-dark btn-lg col-md-6"
+      type="button"
+      data-bs-toggle="modal"
+      data-bs-target="#admin-modal"
+    >
+      Admin Menu
+    </button>
+  </div>
+
+  <div class="modal fade" id="admin-modal" tabindex="-1">
+    <div class="modal-dialog">
+      <form class="modal-content" method="post" action="/" autocomplete="off">
+        <div class="modal-header">
+          <h5 class="modal-title">Admin Panel</h5>
+          <button
+            class="btn-close"
+            type="button"
+            data-bs-dismiss="modal"
+          ></button>
+        </div>
+        <div class="modal-body container">
+          <div class="row g-3">
+            <div class="form-group col-md-12">
+              <label class="form-label" for="admin-input"
+                >Admin Password Login:</label
+              >
+              <input
+                class="form-control"
+                id="admin-input"
+                name="input"
+                type="text"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            class="btn btn-outline-danger me-auto"
+            type="button"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button class="btn btn-success" type="submit">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal fade" id="receipt-modal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Reprint Receipt</h5>
+          <button
+            class="btn-close"
+            type="button"
+            data-bs-dismiss="modal"
+          ></button>
+        </div>
+        <div class="modal-body">
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">Dept</th>
+								<th scope="col">Pass</th>
+								<th scope="col">Book-in Time</th>
+								<th scope="col"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<% recentEntries.forEach((entry, index) => { %>
+								<tr>
+									<th scope="row"><%= entry.dept %></td>
+									<td><%= Object.keys(entry.pass).join(", ") %></td>
+									<td><%= entry.timeIn %></td>
+									<td class="tableButton">
+										<button class="btn btn-outline-secondary printButton" type="button" data-bs-toggle="modal" data-bs-target="#check-modal" data-index="<%= index %>"><img src="/assets/printer.svg"></button>
+									</td>
+								</tr>
+							<% }); %>
+						</tbody>
+					</table>
+				</div>
+        <div class="modal-footer">
+          <button
+            class="btn btn-outline-danger me-auto"
+            type="button"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="check-modal" tabindex="-1">
+    <div class="modal-dialog">
+      <form
+        class="modal-content"
+        autocomplete="off"
+        method="post"
+        action="/reprintReceipt"
+      >
+        <div class="modal-header">
+          <h5 class="modal-title">Reprint Receipt</h5>
+          <button
+            class="btn-close"
+            type="button"
+            data-bs-dismiss="modal"
+          ></button>
+        </div>
+        <div class="modal-body container">
+          <div class="row g-3">
+            <div class="form-group col-md-7">
+              <label class="form-label" for="nric">Team Leader NRIC:</label>
+              <input
+                class="form-control"
+                id="nric"
+                name="data[nric]"
+                type="text"
+                placeholder="Full Unmasked NRIC"
+                maxlength="9"
+                onkeyup="upper(this)"
+              />
+              <div class="valid-feedback">Looks good!</div>
+              <div class="invalid-feedback" id="nric-invalid-feedback"></div>
+            </div>
+            <div class="form-group col-md-5">
+              <label class="form-label" for="type">Which receipt?</label>
+              <div class="btn-group" id="type">
+                <input
+                  class="btn-check"
+                  id="checkin"
+                  name="data[type]"
+                  type="radio"
+                  value="checkin"
+                />
+                <label class="btn btn-outline-dark" for="checkin">Check-in</label>
+                <input
+                  class="btn-check"
+                  id="checkout"
+                  name="data[type]"
+                  type="radio"
+                  value="checkout"
+                />
+                <label class="btn btn-outline-dark" for="checkout"
+                  >Check-out</label
+                >
+              </div>
+            </div>
+            <input id="index" name="data[index]" type="hidden" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            class="btn btn-outline-danger me-auto"
+            type="button"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button class="btn btn-success" id="submit" type="submit" disabled>
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
+<%- include("./partials/footer") %>
+<script>
+  // Variable declarations
+  const printButtons = Array.from(document.querySelectorAll(".printButton")),
+    checkButtons = Array.from(
+      document.querySelectorAll("input[name='data[type]']")
+    ),
+    {
+      admin_modal,
+      admin_input,
+      check_modal,
+      nric,
+      nric_invalid_feedback,
+      index,
+      submit,
+    } = Object.fromEntries(
+      Array.from(document.querySelectorAll("[id]")).map((element) => [
+        element.id.replace(/-/g, "_"),
+        element,
+      ])
+    );
+
+  // Function definitions
+  const upper = (event) => (event.value = event.value.toUpperCase());
+
+  // NRIC validation
+  const checkNric = async () => {
+    const res = await fetch("/checkNric", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        nric: nric.value.toUpperCase(),
+        index: index.value,
+      }),
+    });
+
+    return await res.json();
+  };
+
+  const submitState = () => {
+    const radioState = checkButtons.some((element) => element.checked),
+      nricState = nric.classList.contains("is-valid");
+
+    submit.disabled = !(radioState && nricState);
+  };
+
+  const isValidated = (element) => {
+    return ["is-valid", "is-invalid"].some((state) =>
+      element.classList.contains(state)
+    );
+  };
+
+  const validateNric = () => {
+    if (nric.value.length < 9) {
+      nric.className = `form-control${
+        nric.value.length === 0 ? "" : " is-invalid"
+      }`;
+      nric_invalid_feedback.innerHTML =
+        "Please enter <strong>Full <u>Unmasked</u></strong> NRIC (e.g. 'S1234567A').";
+      submitState();
+    } else {
+      const promise = checkNric();
+
+      promise.then((boolean) => {
+        if (!boolean)
+          nric_invalid_feedback.innerHTML =
+            "<strong>NRIC does not match with entry!</strong>";
+        nric.className = `form-control ${boolean ? "is-valid" : "is-invalid"}`;
+        submitState();
+      });
+    }
+  };
+
+  // Event listeners
+  admin_modal.addEventListener("shown.bs.modal", () => admin_input.focus());
+
+  printButtons.forEach((button) => {
+    button.addEventListener(
+      "click",
+      () => (index.value = button.dataset.index)
+    );
+  });
+
+  check_modal.addEventListener("shown.bs.modal", () => nric.focus());
+
+  nric.addEventListener("keyup", async () => await validateNric());
+
+  checkButtons.forEach((element) => {
+    element.addEventListener("click", () => submitState());
+  });
+</script>

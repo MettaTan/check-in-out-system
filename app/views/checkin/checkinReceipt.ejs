@@ -1,0 +1,224 @@
+<style>
+  /* * {
+        border-style: solid;
+        border-color: black;
+        border-width: 1px;
+    } */
+  img {
+    height: 35mm;
+  }
+  h5,
+  h6,
+  #letter {
+    font-family: "Times New Roman", Times, serif;
+  }
+  .receipt {
+    /* Sticker padding */
+    width: 80mm;
+    padding-top: 0mm;
+    padding-right: 4mm;
+    padding-bottom: 0mm;
+    padding-left: 4mm;
+    /* Use this margin to adjust sticker margins */
+    margin-top: 0mm !important;
+    margin-right: 0mm !important;
+    margin-bottom: 0mm !important;
+    margin-left: 0mm !important;
+    visibility: hidden;
+    overflow: hidden;
+  }
+  #fields {
+    white-space: nowrap;
+  }
+  #letter {
+    margin: 0 auto;
+    width: 35mm;
+    height: 35mm;
+    line-height: 35mm;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    font-size: 35mm;
+  }
+  #qrcode {
+    margin-bottom: 2mm;
+  }
+  @media print {
+    @page {
+      size: 80mm 100%;
+      margin-top: 0mm;
+      margin-right: 0mm;
+      margin-bottom: 0mm;
+      margin-left: 0mm;
+    }
+    main,
+    main * {
+      display: none !important;
+    }
+    .receipt,
+    .receipt * {
+      visibility: visible !important;
+    }
+  }
+</style>
+<script src="/javascripts/moment-with-locales.js"></script>
+<main class="container w-75 mt-4">
+   <div class="card" style="width: auto;">
+    <div class="card-body">
+  <br />
+  <div class="d-flex justify-content-left container w-50">
+    Name:&nbsp;<strong><%= dept.fullName %></strong>
+  </div>
+  <div class="d-flex justify-content-left container w-50">
+    NRIC:&nbsp;<strong><%= dept.nric %></strong>
+  </div>
+  <div class="d-flex justify-content-left container w-50">
+    Department:&nbsp;<strong><%= dept.dept %></strong>
+  </div>
+  <br />
+  <div class="d-flex justify-content-evenly container w-50">
+    <a class="btn btn-outline-danger btn-lg" type="button" href="/">Go Back</a>
+    <button
+      class="btn btn-success btn-lg"
+      type="button"
+      onclick="window.print()"
+    >
+      Print
+    </button>
+  </div>
+</div>
+</div>
+</main>
+<div class="receipt">
+  <div class="text-center">
+    <img class="my-3" src="/assets/zeroLogo.png" />
+    <h5 class="mb-3"><strong>SAERIN ENGINEERING CHECK-IN SLIP</strong></h5>
+  </div>
+  <div class="mb-4">
+    <strong>TIME IN: </strong><%= dept.timeIn %>
+    <br />
+    <strong>NRIC: </strong><%= `${dept.nric.substring(0,
+    1)}XXXX${dept.nric.substring(5)}` %>
+    <br />
+    <strong>NAME OF PERSONNEL: </strong><%= dept.fullName %>
+    <br />
+    <strong>CONTACT NO.: </strong><%= `+65 ${dept.contact.substring(0, 4)}
+    ${dept.contact.substring(4)}` %>
+    <br />
+    <strong>DEPARTMENT: </strong><%= dept.dept %>
+    <br />
+    <strong>PURPOSE OF VISIT: </strong><%= dept.purpose %>
+  </div>
+
+  <div class="mt-3">
+    <strong>CONTRABAND ITEM(S) DECLARATION</strong>
+    I declare that I *have / do not have any contraband item(s) or camera
+    handphone / PDA with camera / image capturing device / personal laptop in my
+    possession.
+    <br />
+    (* Delete accordingly)
+  </div>
+  <div class="mt-1">
+    Camera Handphone Brand / Model: ___________________________________________
+  </div>
+  <div class="mt-1">
+    Laptop Model / Serial Number: ___________________________________________
+  </div>
+  <div class="mt-1">Others: ___________________________________________</div>
+  <div class="mt-3" id="fields">
+    <strong>FOR OFFICIAL USE ONLY</strong>
+    <br />
+    <strong>PASSPHRASE: _________________________________</strong>
+    <br />
+    <strong>FULL NAME: _____________________________</strong>
+    <br />
+    <strong>REMARKS: _________________________________</strong>
+    <br />
+    ___________________________________________
+    <br />
+    <strong>TIME OUT: _________________________________</strong>
+  </div>
+  <br />
+  <hr />
+  <% for (let i = 0; i < 2; i++) { %>
+  <br />
+  <div class="text-center">
+    <h6 class="mb-4">RESTRICTED</h6>
+    <div id="letter">
+      <% switch (dept.purpose) { case "Access Special Purpose Lab": %> S <%
+      break; case "Access File Room": %> F <% break; case "Access Warehouse": %>
+      W <% break; case "Visit Gallery of Artefacts": %> G <% break; case
+      "Loan/Return Equipment": %> L <% break; default: break; } %>
+    </div>
+  </div>
+  <div class="mt-3">
+    <strong>TIME IN: </strong><%= dept.timeIn %> HRS
+    <br />
+    <strong>DEPARTMENT: </strong><%= dept.dept %>
+    <br />
+    <strong>PASSPHRASE: </strong><% Object.keys(dept.pass).forEach((entry,
+    index) => { %> <%= `${entry}${index === Object.keys(dept.pass).length - 1 ?
+    "" : ", "}` %> <% }); %>
+    <br />
+    <strong>TEAM LEADER: </strong><%= dept.fullName %>
+    <br />
+    <strong>TEAM MEMBEERS: </strong><%= Object.keys(dept.team).length + 1 %>
+    <br />
+  </div>
+  <div class="mt-3">
+    <strong>To Sentry:</strong>
+    The above mentioned Team Leader is hereby authorised to enter Saerin Engineering premises
+     with their team to 
+    <% switch (dept.purpose) { case "Access Special Purpose Lab": %> access the special purpoes lab <%
+    break; case "Access File Room": %> access the file room <% break; case "Access Warehouse": %>
+    access the warehouse <% break; case "Visit Gallery of Artefacts": %> visit the Gallery of Artefacts <% break; case
+    "Loan/Return Equipment": %> loan and/or return equipment <% break; default: break; } %>
+
+    <br />
+
+  </div>
+  <div class="mt-3" id="fields">
+    <strong>AUTHORISED BY</strong>
+    <br />
+    <strong>SAERIN ENGINEERING DESK IC</strong>
+    <br />
+    <strong>NRIC: _____________________________________</strong>
+    <br />
+    <strong>FULL NAME: ____________________________</strong>
+    <br />
+    <strong>SIGNATURE:</strong>
+    <br />
+    ___________________________________________
+  </div>
+  <br />
+  <div class="mt-2 mb-5 text-center">
+    <h6>RESTRICTED</h6>
+  </div>
+  <hr />
+  <% } %>
+  <br />
+  <div class="text-center mt-3 mb-5">
+    <div class="d-flex justify-content-center">
+      <div id="qrcode"></div>
+    </div>
+    <div class="d-flex justify-content-center">
+      <strong>SCAN ME USING THE QR CODE SCANNER TO CHECK IN!</strong>
+    </div>
+  </div>
+  <hr />
+</div>
+<script src="/javascripts/qrcode.js"></script>
+<script>
+  const qrcode = new QRCode(document.getElementById("qrcode"), {
+    text:
+      "<%= `${dept.nric}|${dept.fullName}|${dept.dept}|${Object.keys(dept.pass).length > 0 ? Object.keys(dept.pass)[0].slice(-4) : '0000'}|${dept.purpose}|` %>" +
+      moment().format("DD-MM-YYYY"),
+    width: 128,
+    height: 128,
+    colorDark: "#000000",
+    colorLight: "#FFFFFF",
+    correctLevel: QRCode.CorrectLevel.H,
+  });
+
+  window.print();
+</script>

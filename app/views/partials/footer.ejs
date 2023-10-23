@@ -1,0 +1,13 @@
+<div class="container mb-5">
+	<hr class="text-light">
+	<div class="row g-3 text-light">
+		<span class="col-md-4">By Metta Tan</span>
+		<span class="col-md-4 text-center" id="footerTime"></span>
+		<span class="col-md-4 text-end">v2.0.0</span>
+	</div>
+</div>
+<script>
+	setInterval(() => {
+		document.getElementById("footerTime").innerHTML = moment().format('MMM Do YYYY, h:mm:ss a');
+	}, 1);
+</script>

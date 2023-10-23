@@ -1,0 +1,45 @@
+<%- include("../partials/header") %>
+<style>
+  .menuButton {
+    --bs-btn-padding-y: 0.75rem;
+    --bs-btn-font-size: 1.25rem;
+  }
+</style>
+<main class="container w-75 mt-4">
+
+  <div class="row d-flex justify-content-evenly">
+    <a
+      class="btn btn-light menuButton col-md-4"
+      type="button"
+      href="/admin/addPass"
+      ><strong>Add<br />Passphrase</strong></a
+    >
+    <a
+      class="btn btn-outline-light menuButton col-md-4"
+      type="button"
+      href="/admin/passTable"
+      >View &amp;<br />Edit Passphrase</a
+    >
+  </div>
+  <div class="row d-flex justify-content-evenly mt-4">
+    <a
+      class="btn btn-outline-light menuButton col-md-4"
+      type="button"
+      href="/admin/deptRecords"
+      >View Check-in/<br />out Records</a
+    >
+    <a
+      class="btn btn-outline-light menuButton col-md-4"
+      type="button"
+      href="/admin/feedbackRecords"
+      >View<br />Feedback Records</a
+    >
+  </div>
+  <div class="row d-flex justify-content-center mt-4">
+    <a class="btn btn-dark btn-lg col-md-6" type="button" href="/"
+      >Back</a
+    >
+  </div>
+
+</main>
+<%- include("../partials/footer") %>
