@@ -23,12 +23,12 @@ include("../partials/header") %>
       hue-rotate(145deg) brightness(96%) contrast(96%);
   }
 </style>
-<main class="container">
-  <div class="card" style="width: 100%;">
+<main class="container w-75 mt-5">
+  <div class="card" style="border: none; box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.1);">
     <div class="card-body">
   <hr />
   <div class="row g-3 mb-3">
-    <a class="btn btn-outline-danger w-100" type="button" href="/admin"
+    <a class="btn btn-outline-secondary w-100" type="button" href="/admin"
       ><strong>Go Back</strong></a
     >
   </div>
@@ -132,14 +132,14 @@ include("../partials/header") %>
         </div>
         <div class="modal-footer">
           <button
-            class="btn btn-outline-danger me-auto"
+            class="btn btn-outline-primary me-auto"
             type="button"
             data-bs-dismiss="modal"
           >
             Close
           </button>
           <button
-            class="btn btn-success"
+            class="btn btn-primary text-light"
             id="edit-entry"
             type="button"
             disabled
@@ -173,13 +173,13 @@ include("../partials/header") %>
         </div>
         <div class="modal-footer">
           <button
-            class="btn btn-outline-danger me-auto"
+            class="btn btn-outline-primary me-auto"
             type="button"
             data-bs-dismiss="modal"
           >
             Close
           </button>
-          <button class="btn btn-danger" id="delete-entry" type="button">
+          <button class="btn btn-primary text-light" id="delete-entry" type="button">
             Delete!
           </button>
         </div>
@@ -189,7 +189,7 @@ include("../partials/header") %>
 </div>
 </div>
 </main>
-<%- include("../partials/footer") %>
+
 <script>
   $(document).ready(function () {
     $(".table").DataTable({
@@ -228,8 +228,8 @@ include("../partials/header") %>
           },
         },
         {
-          defaultContent: `<button class="btn btn-outline-info btn-sm editButton" type="button"><img class="filter-cyan" src="/assets/pencil-square.svg" height="17px"></button>
-                    <button class="btn btn-outline-danger btn-sm deleteButton" type="button"><img class="filter-red" src="/assets/trash.svg" height="17px"></button>`,
+          defaultContent: `<button class="btn btn-outline-dark btn-sm editButton" type="button"><img class="filter-cyan" src="/assets/pencil-square.svg" height="17px"></button>
+                    <button class="btn btn-outline-dark btn-sm deleteButton" type="button"><img class="filter-red" src="/assets/trash.svg" height="17px"></button>`,
         },
       ],
       order: [[0, "desc"]],

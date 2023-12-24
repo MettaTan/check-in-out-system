@@ -34,36 +34,36 @@
 	}
 </style>
 <main class="container w-75 mt-4">
-	<div class="card" style="width: 100%;">
-		<div class="card-body">
+	<div class="card" style="border: none; box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.1);">
+	<div class="card-body">
 	<h4><u>Personnel Particulars</u></h4>
 	<h5>Please check your particulars and sign.</h5>
 	<hr>
 	<form method="post" action="/checkout" autocomplete="off">
-		<div class="row g-3" id="particulars-form">
-	
-			<div class="form-group col-md-6">
+		<div class="row" id="particulars-form">
+			<div class="vstack justify-content-evenly col-md-6">
+			<div class="form-group">
 				<label class="form-label" for="nric">NRIC</label>
 				<input class="form-control" id="nric" name="dept[nric]" type="text" placeholder="Full Unmasked NRIC" maxlength="9" onkeyup="upper(this)">
 				<div class="valid-feedback">Looks good!</div>
 				<div class="invalid-feedback" id="nric-invalid-feedback"></div>
 			</div>
-			<div class="form-group col-md-6">
+			<div class="form-group">
 				<label class="form-label" for="fullName">Full Name</label>
 				<input class="form-control" id="fullName" name="dept[fullName]" type="text" placeholder="Full Name" disabled>
 			</div>
-			<div class="form-group col-md-6">
+			<div class="form-group">
 				<label class="form-label" for="dept">Department</label>
 				<input class="form-control" id="dept" name="dept[dept]" type="text" placeholder="Department Name" maxlength="10" disabled>
 			</div>
-			<div class="form-group col-md-6">
+			<div class="form-group">
 				<label class="form-label" for="contact">Contact No.</label>
 				<div class="input-group">
 					<span class="input-group-text">+65</span>
 					<input class="form-control" id="contact" name="dept[contact]" type="text" placeholder="Contact No." maxlength="8" disabled>
 				</div>
 			</div>
-			<div class="form-group col-md-12">
+			<div class="form-group mt-1">
 				<label class="form-label" for="purpose">Purpose</label>
 				<select class="form-select" id="purpose" name="dept[purpose]" disabled>
 					<option selected value="" disabled>Select an option...</option>
@@ -76,23 +76,27 @@
 			</div>
 			<input id="timeIn" name="dept[timeIn]" type="hidden">
 			<input id="timeOut" name="dept[timeOut]" type="hidden">
-			<div class="form-group col-md-12">
+			</div>
+			<div class="form-group col-md-6">
 				<label class="form-label" for="signature">Signature</label>
 				<canvas class="border" id="sig-canvas"></canvas>
-				<button class="btn btn-outline-danger btn-sm w-100" id="signature-clear" type="button">Clear Signature</button>
+				<button class="btn btn-outline-secondary btn-sm w-100" id="signature-clear" type="button">Clear Signature</button>
 				<input id="signature" name="signature[signatureOut]" type="hidden">
 				<div class="invalid-feedback">Please sign.</div>
 			</div>
-			<div class="col-md-12">
+			</div>
+			<div class="col-md-12 mt-3">
 				<div class="progress">
 					<div class="progress-bar bg-success progress-bar-striped progress-bar-animated" id="progress-bar"></div>
 				</div>
 			</div>
-			<div class="col-md-6">
-				<a class="btn btn-danger btn-lg w-100" type="button" href="/">Go Back</a>
-			</div>
-			<div class="col-md-6">
-				<button class="btn btn-outline-success btn-lg w-100" id="particulars-submit" type="button" data-bs-toggle="modal" data-bs-target="#feedback-modal" disabled>Next Page</button>
+			<div class="row mt-3">
+				<div class="col-md-6">
+					<a class="btn btn-info btn-lg w-100" type="button" href="/">Go Back</a>
+				</div>
+				<div class="col-md-6">
+					<button class="btn btn-outline-danger btn-lg w-100" id="particulars-submit" type="button" data-bs-toggle="modal" data-bs-target="#feedback-modal" disabled>Next Page</button>
+				</div>
 			</div>
 		</div>
 		<div class="modal fade" id="feedback-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
@@ -137,7 +141,7 @@
 					</div>
 					<div class="modal-footer">
 						<button class="btn btn-outline-danger me-auto" type="button" data-bs-dismiss="modal">Close</button>
-						<button class="btn btn-success" id="submit" type="submit" disabled>Submit</button>
+						<button class="btn btn-secondary text-light" id="submit" type="submit" disabled>Submit</button>
 					</div>
 				</div>
 			</div>
@@ -173,7 +177,7 @@
 	</div>
 	</div>
 </main>
-<%- include("../partials/footer") %>
+
 <script src="/javascripts/canvas.js"></script>
 <script>
 	document.getElementById("wait0").addEventListener("click",(e) =>clearWait(e.target.value));
@@ -369,7 +373,7 @@
 // Canvas scripting
 	const initializeCanvas = () => {
 		signature_canvas.width = signature_clear.offsetWidth;
-		signature_canvas.height = signature_clear.offsetWidth / 4 * 3;
+		signature_canvas.height = signature_clear.offsetWidth / 4 * 2;
 	}
 
 	const clearCanvas = () => {

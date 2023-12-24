@@ -1,3 +1,41 @@
 {
-  "dept": []
+    "dept": [
+        {
+            "count": "1",
+            "role": "Developer",
+            "purpose": "Access Warehouse",
+            "wait": ">45 min",
+            "time": "<15 min",
+            "service": "No",
+            "serviceComment": "543534534",
+            "paperwork": "No",
+            "paperworkComment": "643643643",
+            "comment": "3123123123123123"
+        },
+        {},
+        {
+            "count": "3+",
+            "role": "Other",
+            "purpose": "Loan/Return Equipment",
+            "wait": "<15 min",
+            "time": "<15 min",
+            "service": "Yes",
+            "serviceComment": "",
+            "paperwork": "Yes",
+            "paperworkComment": "",
+            "comment": "DASDASDA"
+        },
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {}
+    ]
 }

@@ -55,6 +55,9 @@
     main * {
       display: none !important;
     }
+    svg {
+      display: none !important;
+    }
     .receipt,
     .receipt * {
       visibility: visible !important;
@@ -63,7 +66,7 @@
 </style>
 <script src="/javascripts/moment-with-locales.js"></script>
 <main class="container w-75 mt-4">
-   <div class="card" style="width: auto;">
+   <div class="card" style="width: auto; border: none; box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.1);">
     <div class="card-body">
   <br />
   <div class="d-flex justify-content-left container w-50">
@@ -77,9 +80,9 @@
   </div>
   <br />
   <div class="d-flex justify-content-evenly container w-50">
-    <a class="btn btn-outline-danger btn-lg" type="button" href="/">Go Back</a>
+    <a class="btn btn-outline-primary btn-lg" type="button" href="/">Go Back</a>
     <button
-      class="btn btn-success btn-lg"
+      class="btn btn-primary text-light btn-lg"
       type="button"
       onclick="window.print()"
     >
@@ -92,7 +95,7 @@
 <div class="receipt">
   <div class="text-center">
     <img class="my-3" src="/assets/zeroLogo.png" />
-    <h5 class="mb-3"><strong>SAERIN ENGINEERING CHECK-IN SLIP</strong></h5>
+    <h5 class="mb-3"><strong>METTACADEMY LABS CHECK-IN SLIP</strong></h5>
   </div>
   <div class="mb-4">
     <strong>TIME IN: </strong><%= dept.timeIn %>
@@ -167,7 +170,7 @@
   </div>
   <div class="mt-3">
     <strong>To Sentry:</strong>
-    The above mentioned Team Leader is hereby authorised to enter Saerin Engineering premises
+    The above mentioned Team Leader is hereby authorised to enter Mettacademy Labs premises
      with their team to 
     <% switch (dept.purpose) { case "Access Special Purpose Lab": %> access the special purpoes lab <%
     break; case "Access File Room": %> access the file room <% break; case "Access Warehouse": %>
@@ -180,7 +183,7 @@
   <div class="mt-3" id="fields">
     <strong>AUTHORISED BY</strong>
     <br />
-    <strong>SAERIN ENGINEERING DESK IC</strong>
+    <strong>METTACADEMY LABS DESK IC</strong>
     <br />
     <strong>NRIC: _____________________________________</strong>
     <br />
@@ -205,7 +208,6 @@
       <strong>SCAN ME USING THE QR CODE SCANNER TO CHECK IN!</strong>
     </div>
   </div>
-  <hr />
 </div>
 <script src="/javascripts/qrcode.js"></script>
 <script>

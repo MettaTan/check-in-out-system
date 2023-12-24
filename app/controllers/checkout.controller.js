@@ -19,7 +19,7 @@ module.exports = {
     (feedbackSelect = {
       count: {
         col: 3,
-        label: "No. of visits to Saerin Engineering",
+        label: "No. of visits to Mettacademy Labs",
         values: ["1", "2", "3", "3+"],
       },
       role: {

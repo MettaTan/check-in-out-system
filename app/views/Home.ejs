@@ -7,8 +7,9 @@
     text-transform: uppercase;
   }
   .menuButton {
-    --bs-btn-padding-y: 0.75rem;
+    --bs-btn-padding-y: 1.5rem;
     --bs-btn-font-size: 1.5rem;
+    border-radius: 0%
   }
   #receipt-modal table.table {
     width: 100%;
@@ -33,197 +34,202 @@
     display: block;
   }
 </style>
-<main class="container w-75 mt-4">
-  <div class="row d-flex justify-content-evenly">
-    <a class="btn btn-light menuButton col-md-4" type="button" href="/checkin"
+<div class="custom-container w-50">
+  <div class="row d-flex justify-content-evenly mt-5">
+    <a class="btn btn-danger text-light menuButton col-md-4" type="button" href="/checkin"
       ><strong>Check-in</strong></a
     >
-    <a class="btn btn-light menuButton col-md-4" type="button" href="/checkout"
+    <a class="btn btn-danger text-light menuButton col-md-4" type="button" href="/checkout"
       ><strong>Check-out</strong></a
     >
   </div>
-  <div class="row d-flex justify-content-center mt-4">
+  <div class="row d-flex justify-content-evenly mt-4">
     <button
-      class="btn btn-outline-light menuButton col-md-6"
+      class="btn btn-primary text-light text-light menuButton col-md-4"
       type="button"
       data-bs-toggle="modal"
       data-bs-target="#receipt-modal"
     >
-      Reprint receipt
+      <strong>Reprint receipt</strong>
     </button>
-  </div>
-  <div class="row d-flex justify-content-center mt-4">
+
     <button
-      class="btn btn-dark btn-lg col-md-6"
+      class="btn btn-primary text-light menuButton col-md-4"
       type="button"
       data-bs-toggle="modal"
       data-bs-target="#admin-modal"
     >
-      Admin Menu
+      <strong>Admin Menu</strong>
     </button>
   </div>
+  <div class="row d-flex justify-content-evenly mt-4">
+  <a class="row d-flex justify-content-center mt-4" style="text-decoration: none;" href="http://127.0.0.1:8080">
+    <button class="btn btn-outline-dark btn-lg col-md-8" type="button">Return to<br>Main Menu</button>
+  </a>
+</div>
+</div>
 
-  <div class="modal fade" id="admin-modal" tabindex="-1">
-    <div class="modal-dialog">
-      <form class="modal-content" method="post" action="/" autocomplete="off">
-        <div class="modal-header">
-          <h5 class="modal-title">Admin Panel</h5>
-          <button
-            class="btn-close"
-            type="button"
-            data-bs-dismiss="modal"
-          ></button>
-        </div>
-        <div class="modal-body container">
-          <div class="row g-3">
-            <div class="form-group col-md-12">
-              <label class="form-label" for="admin-input"
-                >Admin Password Login:</label
-              >
-              <input
-                class="form-control"
-                id="admin-input"
-                name="input"
-                type="text"
-              />
-            </div>
+<div class="modal fade" id="admin-modal" tabindex="-1">
+  <div class="modal-dialog">
+    <form class="modal-content" method="post" action="/" autocomplete="off">
+      <div class="modal-header">
+        <h5 class="modal-title">Admin Panel</h5>
+        <button
+          class="btn-close"
+          type="button"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+      <div class="modal-body container">
+        <div class="row g-3">
+          <div class="form-group col-md-12">
+            <label class="form-label" for="admin-input"
+              >Admin Password Login:</label
+            >
+            <input
+              class="form-control"
+              id="admin-input"
+              name="input"
+              type="text"
+              placeholder="123"
+            />
           </div>
         </div>
-        <div class="modal-footer">
-          <button
-            class="btn btn-outline-danger me-auto"
-            type="button"
-            data-bs-dismiss="modal"
-          >
-            Close
-          </button>
-          <button class="btn btn-success" type="submit">Submit</button>
-        </div>
-      </form>
-    </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          class="btn btn-outline-primary me-auto"
+          type="button"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+        <button class="btn btn-secondary text-light" type="submit">Submit</button>
+      </div>
+    </form>
   </div>
-  <div class="modal fade" id="receipt-modal" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Reprint Receipt</h5>
-          <button
-            class="btn-close"
-            type="button"
-            data-bs-dismiss="modal"
-          ></button>
-        </div>
-        <div class="modal-body">
-					<table class="table">
-						<thead>
-							<tr>
-								<th scope="col">Dept</th>
-								<th scope="col">Pass</th>
-								<th scope="col">Book-in Time</th>
-								<th scope="col"></th>
-							</tr>
-						</thead>
-						<tbody>
-							<% recentEntries.forEach((entry, index) => { %>
-								<tr>
-									<th scope="row"><%= entry.dept %></td>
-									<td><%= Object.keys(entry.pass).join(", ") %></td>
-									<td><%= entry.timeIn %></td>
-									<td class="tableButton">
-										<button class="btn btn-outline-secondary printButton" type="button" data-bs-toggle="modal" data-bs-target="#check-modal" data-index="<%= index %>"><img src="/assets/printer.svg"></button>
-									</td>
-								</tr>
-							<% }); %>
-						</tbody>
-					</table>
-				</div>
-        <div class="modal-footer">
-          <button
-            class="btn btn-outline-danger me-auto"
-            type="button"
-            data-bs-dismiss="modal"
-          >
-            Close
-          </button>
-        </div>
+</div>
+<div class="modal fade" id="receipt-modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Reprint Receipt</h5>
+        <button
+          class="btn-close"
+          type="button"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Dept</th>
+              <th scope="col">Pass</th>
+              <th scope="col">Book-in Time</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% recentEntries.forEach((entry, index) => { %>
+              <tr>
+                <th scope="row"><%= entry.dept %></td>
+                <td><%= Object.keys(entry.pass).join(", ") %></td>
+                <td><%= entry.timeIn %></td>
+                <td class="tableButton">
+                  <button class="btn btn-outline-secondary printButton" type="button" data-bs-toggle="modal" data-bs-target="#check-modal" data-index="<%= index %>"><img src="/assets/printer.svg"></button>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button
+          class="btn btn-info me-auto"
+          type="button"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
       </div>
     </div>
   </div>
-  <div class="modal fade" id="check-modal" tabindex="-1">
-    <div class="modal-dialog">
-      <form
-        class="modal-content"
-        autocomplete="off"
-        method="post"
-        action="/reprintReceipt"
-      >
-        <div class="modal-header">
-          <h5 class="modal-title">Reprint Receipt</h5>
-          <button
-            class="btn-close"
-            type="button"
-            data-bs-dismiss="modal"
-          ></button>
-        </div>
-        <div class="modal-body container">
-          <div class="row g-3">
-            <div class="form-group col-md-7">
-              <label class="form-label" for="nric">Team Leader NRIC:</label>
-              <input
-                class="form-control"
-                id="nric"
-                name="data[nric]"
-                type="text"
-                placeholder="Full Unmasked NRIC"
-                maxlength="9"
-                onkeyup="upper(this)"
-              />
-              <div class="valid-feedback">Looks good!</div>
-              <div class="invalid-feedback" id="nric-invalid-feedback"></div>
-            </div>
-            <div class="form-group col-md-5">
-              <label class="form-label" for="type">Which receipt?</label>
-              <div class="btn-group" id="type">
-                <input
-                  class="btn-check"
-                  id="checkin"
-                  name="data[type]"
-                  type="radio"
-                  value="checkin"
-                />
-                <label class="btn btn-outline-dark" for="checkin">Check-in</label>
-                <input
-                  class="btn-check"
-                  id="checkout"
-                  name="data[type]"
-                  type="radio"
-                  value="checkout"
-                />
-                <label class="btn btn-outline-dark" for="checkout"
-                  >Check-out</label
-                >
-              </div>
-            </div>
-            <input id="index" name="data[index]" type="hidden" />
+</div>
+<div class="modal fade" id="check-modal" tabindex="-1">
+  <div class="modal-dialog">
+    <form
+      class="modal-content"
+      autocomplete="off"
+      method="post"
+      action="/reprintReceipt"
+    >
+      <div class="modal-header">
+        <h5 class="modal-title">Reprint Receipt</h5>
+        <button
+          class="btn-close"
+          type="button"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+      <div class="modal-body container">
+        <div class="row g-3">
+          <div class="form-group col-md-7">
+            <label class="form-label" for="nric">Team Leader NRIC:</label>
+            <input
+              class="form-control"
+              id="nric"
+              name="data[nric]"
+              type="text"
+              placeholder="Full Unmasked NRIC"
+              maxlength="9"
+              onkeyup="upper(this)"
+            />
+            <div class="valid-feedback">Looks good!</div>
+            <div class="invalid-feedback" id="nric-invalid-feedback"></div>
           </div>
+          <div class="form-group col-md-5">
+            <label class="form-label" for="type">Which receipt?</label>
+            <div class="btn-group" id="type">
+              <input
+                class="btn-check"
+                id="checkin"
+                name="data[type]"
+                type="radio"
+                value="checkin"
+              />
+              <label class="btn btn-outline-dark" for="checkin">Check-in</label>
+              <input
+                class="btn-check"
+                id="checkout"
+                name="data[type]"
+                type="radio"
+                value="checkout"
+              />
+              <label class="btn btn-outline-dark" for="checkout"
+                >Check-out</label
+              >
+            </div>
+          </div>
+          <input id="index" name="data[index]" type="hidden" />
         </div>
-        <div class="modal-footer">
-          <button
-            class="btn btn-outline-danger me-auto"
-            type="button"
-            data-bs-dismiss="modal"
-          >
-            Close
-          </button>
-          <button class="btn btn-success" id="submit" type="submit" disabled>
-            Submit
-          </button>
-        </div>
-      </form>
-    </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          class="btn btn-outline-danger me-auto"
+          type="button"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+        <button class="btn btn-secondary text-light" id="submit" type="submit" disabled>
+          Submit
+        </button>
+      </div>
+    </form>
   </div>
-</main>
-<%- include("./partials/footer") %>
+</div>
+
 <script>
   // Variable declarations
   const printButtons = Array.from(document.querySelectorAll(".printButton")),

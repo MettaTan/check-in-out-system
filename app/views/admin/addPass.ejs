@@ -17,8 +17,8 @@
     text-align: right;
   }
 </style>
-<main class="container w-75">
-  <div class="card" style="width: 100%;">
+<main class="container w-75 mt-5">
+  <div class="card" style="border: none; box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.1);">
     <div class="card-body">
   <hr />
   <form
@@ -58,13 +58,13 @@
       </table>
     </div>
     <div class="col-md-6">
-      <a class="btn btn-danger btn-lg w-100" type="button" href="/admin"
+      <a class="btn btn-outline-primary btn-lg w-100" type="button" href="/admin"
         >Go Back</a
       >
     </div>
     <div class="col-md-6">
       <button
-        class="btn btn-success btn-lg w-100"
+        class="btn btn-primary text-light btn-lg w-100"
         id="submit"
         type="submit"
         disabled
@@ -76,7 +76,7 @@
 </div>
 </div>
 </main>
-<%- include("../partials/footer") %>
+
 <script>
   const { date, submit, pass_div, pass_tbody, add_row } = Object.fromEntries(
     Array.from(document.querySelectorAll("[id]")).map((element) => [

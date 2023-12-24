@@ -1,7 +1,12 @@
 // custom variables
-$primary: #0052a2;
-$light: #f6f6f2;
-$dark: #00264d;
+$primary: #ff6c86;
+$secondary: #2b92e4;
+$success: #f54da3;
+$info: #f8bf80;
+$danger: #f9476c;
+$warning: #fdd5c8;
+$light: #f9f0ed;
+$dark: #361040;
 $font-family-sans-serif: "Open Sans", sans-serif !default;
 $font-family-base: $font-family-sans-serif !default;
 
@@ -11,9 +16,7 @@ $font-family-base: $font-family-sans-serif !default;
 @import "../node_modules/bootstrap/scss/_functions";
 @import "../node_modules/bootstrap/scss/_variables";
 
-$custom-theme-colors: (
-  "altdark": #020202,
-);
+$custom-theme-colors: ();
 
 $theme-colors: map-merge($custom-theme-colors, $theme-colors);
 

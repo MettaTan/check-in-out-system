@@ -9,12 +9,12 @@ include("../partials/header") %>
     white-space: nowrap;
   }
 </style>
-<main class="container">
-  <div class="card" style="width: 100%;">
+<main class="container w-75 mt-5">
+  <div class="card" style="border: none; box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.1);">
     <div class="card-body">
   <hr />
   <div class="row g-3 mb-3">
-    <a class="btn btn-outline-danger w-100" type="button" href="/admin"
+    <a class="btn btn-info text-light w-100" type="button" href="/admin"
       ><strong>Go Back</strong></a
     >
   </div>
@@ -87,7 +87,7 @@ include("../partials/header") %>
 </div>
 </div>
 </main>
-<%- include("../partials/footer") %>
+
 <script>
   $(document).ready(function () {
     $(".table").DataTable({
@@ -101,15 +101,15 @@ include("../partials/header") %>
       buttons: [
         {
           extend: "csv",
-          className: "btn-sm",
+          className: "btn-sm text-light",
         },
         {
           extend: "excel",
-          className: "btn-sm",
+          className: "btn-sm text-light",
         },
         {
           extend: "pdf",
-          className: "btn-sm",
+          className: "btn-sm text-light",
         },
       ],
       ajax: "getFeedbackData",

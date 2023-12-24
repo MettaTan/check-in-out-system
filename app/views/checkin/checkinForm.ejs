@@ -29,9 +29,9 @@
     width: 0%;
   }
 </style>
-<main class="container w-75 mt-4">
-  <div class="card" style="width: 100%;">
-    <div class="card-body">
+<div class="container w-75 mt-5">
+  <div class="card" style="border: none; box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.1);">
+  <div class="card-body">
   <h4><u>Personnel Particulars &amp; Passphrase Authentication</u></h4>
   <h5>Please include all relevant information.</h5>
   <hr />
@@ -173,13 +173,13 @@
         </div>
       </div>
       <div class="col-md-6">
-        <a class="btn btn-danger btn-lg w-100" type="button" href="/"
+        <a class="btn btn-info btn-lg w-100" type="button" href="/"
           >Go Back</a
         >
       </div>
       <div class="col-md-6">
         <button
-          class="btn btn-outline-success btn-lg w-100"
+          class="btn btn-outline-primary btn-lg w-100"
           id="particulars-submit"
           type="button"
           data-bs-toggle="modal"
@@ -247,7 +247,7 @@
                 Previous Page
               </button>
               <button
-                class="btn btn-outline-success"
+                class="btn btn-info"
                 id="team-submit"
                 type="button"
                 data-bs-toggle="modal"
@@ -271,7 +271,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">
-              Notes to personnel entering Saerin Engineering
+              Notes to personnel entering Mettacademy Labs
             </h5>
             <button
               class="btn-close"
@@ -285,7 +285,7 @@
               <ol>
                 <li>
                   <strong><u>NO</u></strong> smoking in the
-                  <u>Administrative Area</u> and <u>Restricted Zone</u> of Saerin Engineering
+                  <u>Administrative Area</u> and <u>Restricted Zone</u> of Mettacademy
                   <strong><u>AT ALL TIMES</u></strong
                   >.
                 </li>
@@ -302,7 +302,7 @@
                 </li>
                 <li>
                   Non-compliance with this declaration will result in your team
-                  being <u>blacklisted by Saerin Engineering</u>!
+                  being <u>blacklisted by Mettacademy</u>!
                 </li>
               </ol>
             </h6>
@@ -322,7 +322,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-outline-danger me-auto"
+              class="btn btn-outline-primary me-auto"
               type="button"
               data-bs-toggle="modal"
               data-bs-target="#team-modal"
@@ -330,7 +330,7 @@
               Previous Page
             </button>
             <button
-              class="btn btn-outline-success"
+              class="btn btn-info"
               id="terms0-submit"
               type="button"
               data-bs-toggle="modal"
@@ -401,7 +401,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-outline-danger me-auto"
+              class="btn btn-outline-primary me-auto"
               type="button"
               data-bs-toggle="modal"
               data-bs-target="#terms0-modal"
@@ -409,7 +409,7 @@
               Previous Page
             </button>
             <button
-              class="btn btn-outline-success"
+              class="btn btn-info"
               id="terms1-submit"
               type="button"
               data-bs-toggle="modal"
@@ -459,7 +459,7 @@
                   <label class="form-label" for="signature">Signature</label>
                   <canvas class="border" id="sig-canvas"></canvas>
                   <button
-                    class="btn btn-outline-danger btn-sm w-100"
+                    class="btn btn-outline-secondary btn-sm w-100"
                     id="signature-clear"
                     type="button"
                   >
@@ -477,23 +477,25 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-outline-danger me-auto"
+              class="btn btn-info me-auto"
               type="button"
               data-bs-toggle="modal"
               data-bs-target="#terms1-modal"
             >
               Previous Page
             </button>
-            <button class="btn btn-success" id="submit-button" type="button">
+            <button class="btn btn-primary text-light" id="submit-button" type="button">
               <strong>Submit</strong>
             </button>
           </div>
         </div>
       </div>
     </div>
+  </div>
+</div>
   </form>
 </main>
-<%- include("../partials/footer") %>
+
 <script src="/javascripts/canvas.js"></script>
 <script>
   // Variable declarations
@@ -784,7 +786,7 @@
 
   const clearCanvas = () => {
     signature_canvas.width = signature_clear.offsetWidth;
-    signature_canvas.height = (signature_clear.offsetWidth / 4) * 3;
+    signature_canvas.height = (signature_clear.offsetWidth / 4) * 1;
     signature.value = "";
     submitProgress();
   };

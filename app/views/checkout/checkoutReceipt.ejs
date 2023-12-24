@@ -37,6 +37,9 @@
     main * {
       display: none !important;
     }
+    svg {
+      display: none !important;
+    }
     .receipt,
     .receipt * {
       visibility: visible !important;
@@ -44,7 +47,7 @@
   }
 </style>
 <main class="container w-75 mt-4">
-  <div class="card" style="width: auto;">
+  <div class="card" style="width: auto; border: none; box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.1);">
    <div class="card-body">
   <br />
   <div class="d-flex justify-content-left container w-50">
@@ -58,9 +61,9 @@
   </div>
   <br />
   <div class="d-flex justify-content-evenly container w-50">
-    <a class="btn btn-outline-danger btn-lg" type="button" href="/">Go Back</a>
+    <a class="btn btn-outline-primary btn-lg" type="button" href="/">Go Back</a>
     <button
-      class="btn btn-success btn-lg"
+      class="btn btn-primary text-light btn-lg"
       type="button"
       onclick="window.print()"
     >
@@ -73,7 +76,7 @@
 <div class="receipt">
   <div class="text-center">
     <img class="my-3" src="/assets/zeroLogo.png" />
-    <h5 class="mb-3"><strong>SAERIN ENGINEERING CHECK-OUT SLIP</strong></h5>
+    <h5 class="mb-3"><strong>METTACADEMY LABS CHECK-OUT SLIP</strong></h5>
   </div>
   <div class="mb-4">
     <strong>DEPARTMENT: </strong><%= dept.dept %>
@@ -118,7 +121,6 @@
     <br />
     <strong>TIME OUT: </strong><%= dept.timeOut %>
   </div>
-  <hr />
 </div>
 <script>
   window.print();

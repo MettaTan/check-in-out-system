@@ -40,6 +40,6 @@ app.use(ExpressError.renderError);
 
 app.listen(port, () => {
   console.log(`Time: ${app.settings.moment()}`);
-  console.log(`ADMIN_BIBO listening on port ${port}`);
+  console.log("Express is listening on http://127.0.0.1" + ":" + port);
   console.log("-".repeat(process.stdout.columns));
 });

@@ -1032,3 +1032,10 @@ ADMIN_BIBO listening on port 8000
 Time: Mon Oct 23 2023 22:31:22 GMT+0800
 ADMIN_BIBO listening on port 8000
 
+
+> admin_bibo@1.0.0 server
+> cd app & node index
+
+Time: Mon Oct 23 2023 22:39:39 GMT+0800
+ADMIN_BIBO listening on port 8000
+

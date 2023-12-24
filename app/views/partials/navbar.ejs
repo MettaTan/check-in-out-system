@@ -1,8 +1,7 @@
-<nav class="navbar navbar-dark navbar-expand-lg">
-  <div class="container-fluid">
-    <div class="navbar-brand">
-      <img src="/assets/zeroLogo2.png" height="30px" style="filter: grayscale(100%)"/>
-      &nbsp;Saerin Engineering
+<nav class="navbar navbar-light navbar-expand-lg">
+  <div class="container-fluid w-75">
+    <div class="navbar-brand text-danger">
+        METT<strong>ACADEMY</strong> Labs              
     </div>
     <button
       class="navbar-toggler"
@@ -13,20 +12,61 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbar-content">
-      <ul class="navbar-nav me-auto">
+      <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link active" href="/">Home</a>
+          <a class="nav-link active text-danger" href="/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="/checkin">Check-in</a>
+          <a class="nav-link active text-danger" href="/checkin"><strong>Check-in</strong></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="/checkout">Check-out</a>
+          <a class="nav-link active text-danger" href="/checkout"><strong>Check-out</strong></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link disabled" href="/admin">Admin Menu</a>
-        </li>
+					<a class="nav-link active text-danger" data-bs-toggle="modal" data-bs-target="#admin-modal" href="/admin"><strong>Admin Menu</strong></a>
+				</li>
       </ul>
     </div>
   </div>
 </nav>
+
+<div class="modal fade" id="admin-modal" tabindex="-1">
+  <div class="modal-dialog">
+    <form class="modal-content" method="post" action="/" autocomplete="off">
+      <div class="modal-header">
+        <h5 class="modal-title">Admin Panel</h5>
+        <button
+          class="btn-close"
+          type="button"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+      <div class="modal-body container">
+        <div class="row g-3">
+          <div class="form-group col-md-12">
+            <label class="form-label" for="admin-input"
+              >Admin Password Login:</label
+            >
+            <input
+              class="form-control"
+              id="admin-input"
+              name="input"
+              type="text"
+              placeholder="123"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          class="btn btn-outline-primary me-auto"
+          type="button"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+        <button class="btn btn-secondary text-light" type="submit">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>
